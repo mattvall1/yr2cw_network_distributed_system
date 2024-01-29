@@ -12,7 +12,7 @@ public class Server {
             System.out.println("Connection to client failed");
         }
 
-        // If we get to this point, the client is sucessfully connected
+        // If we get to this point, a client is successfully connected
         System.out.println("Connected");
 
 
