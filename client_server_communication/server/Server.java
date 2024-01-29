@@ -4,17 +4,47 @@ import java.net.*;
 
 public class Server {
     public static void main(String[] args) throws Exception {
-        // Create server socket - listening
-        try (ServerSocket serverSocket = new ServerSocket(850)) {
+        // Define variables
+        ServerSocket serverSocket = null;
+        Socket socket = null;
+
+        // Create server socket
+        try {
+            serverSocket = new ServerSocket(850);
+        } catch (IOException e) {
+            System.out.println("Connection failed");
+        }
+
+        try {
             // Connect to client socket
-            Socket socket = serverSocket.accept();
-        } catch(Exception e) {
-            System.out.println("Connection to client failed");
+            socket = serverSocket.accept();
+        } catch (IOException e) {
+            System.out.println("I/O error: " + e);
         }
 
         // If we get to this point, a client is successfully connected
-        System.out.println("Connected");
+        System.out.println("IP: " + socket.getLocalAddress() + ", at port: " + socket.getLocalPort() + " connected");
 
+        // Read data from client
+        BufferedReader bufferedReader
+                = new BufferedReader(
+                new InputStreamReader(
+                        socket.getInputStream()));
+
+        // Server executes continuously
+        while (true) {
+            String recievedData;
+            // Read from client + print
+            while ((recievedData = bufferedReader.readLine()) != null) {
+                System.out.println(recievedData);
+            }
+
+            // Close connections
+            bufferedReader.close();
+            serverSocket.close();
+            socket.close();
+
+        }
 
     }
 
