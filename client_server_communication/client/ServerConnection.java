@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class ServerConnection {
-    public static void connectToServer(String host, int port) throws IOException {
+    public static void connectToServer(String host, int port, int userID) throws IOException {
         /* Create client socket */
         Socket socket = new Socket(host, port);
         System.out.println("Connected to server");
@@ -14,17 +14,23 @@ public class ServerConnection {
                 = new DataOutputStream(
                 socket.getOutputStream());
 
-        // to read data from the keyboard
+        // Send user ID to server (TODO: int datatype here)
+        dataOutput.writeInt(userID);
+        // Message handler - out
+
+
+        // BufferedReader to read data from the keyboard
         BufferedReader kb
                 = new BufferedReader(
-                    new InputStreamReader(System.in));
+                new InputStreamReader(System.in));
 
-        String toSend;
-
+        String messageToSend;
         // Repeat if exit is not typed
-        while (!(toSend = kb.readLine()).equals("exit")) {
+        System.out.println("Input message: ");
+        while (!(messageToSend = kb.readLine()).equals("exit")) {
+            System.out.println("Input message: ");
             // Send to  server
-            dataOutput.writeBytes(toSend + "\n");
+            dataOutput.writeBytes(messageToSend + "\n");
         }
 
         // Close connection
