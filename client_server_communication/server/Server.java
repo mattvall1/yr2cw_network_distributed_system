@@ -37,8 +37,8 @@ public class Server {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 
-                int userID = Integer.parseInt(bufferedReader.readLine());
-                System.out.println(userID);
+//                int userID = Integer.parseInt(bufferedReader.readLine());
+//                System.out.println(userID);
 
 //                // TODO: Check DB for user details, make sure ID is retrieved correctly
 //                if(userID == 666) {
