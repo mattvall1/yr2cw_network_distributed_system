@@ -8,16 +8,14 @@ public class ServerConnection {
         /* Create client socket */
         Socket socket = new Socket(host, port);
         System.out.println("Connected to server");
-
         // Stream to send data to server
-        DataOutputStream dataOutput
-                = new DataOutputStream(
-                socket.getOutputStream());
+        DataOutputStream dataOutput = new DataOutputStream(socket.getOutputStream());
 
         // Send user ID to server (TODO: int datatype here)
         dataOutput.writeInt(userID);
-        // Message handler - out
+        dataOutput.flush();
 
+        // Message handler - out
 
         // BufferedReader to read data from the keyboard
         BufferedReader kb

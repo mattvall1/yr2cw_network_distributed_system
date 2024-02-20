@@ -32,21 +32,13 @@ public class Server {
 
         @Override // Override method in superclass
         public void run() {
-            try {
+            try (DataInputStream dataInput = new DataInputStream(socket.getInputStream())) {
+                var userID = (dataInput.readInt());
+
+                // TODO: Check DB for user details, for previous conversations
+
                 // Read data from client
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-
-//                int userID = Integer.parseInt(bufferedReader.readLine());
-//                System.out.println(userID);
-
-//                // TODO: Check DB for user details, make sure ID is retrieved correctly
-//                if(userID == 666) {
-//                    System.out.println("ID successfully retrieved");
-////                    bufferedReader.readLine() = "\n";
-//                } else {
-//
-//                }
 
                 // Define received data string
                 String receivedData;
