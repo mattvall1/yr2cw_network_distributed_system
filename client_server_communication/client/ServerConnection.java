@@ -2,6 +2,8 @@ package client_server_communication.client;
 
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class ServerConnection {
     public static void connectToServer(String host, int port, int userID) throws IOException {
@@ -11,29 +13,64 @@ public class ServerConnection {
         // Stream to send data to server
         DataOutputStream dataOutput = new DataOutputStream(socket.getOutputStream());
 
-        // Send user ID to server (TODO: int datatype here)
+        // Send user ID to server
         dataOutput.writeInt(userID);
         dataOutput.flush();
-
-        // Message handler - out
 
         // BufferedReader to read data from the keyboard
         BufferedReader kb
                 = new BufferedReader(
                 new InputStreamReader(System.in));
 
-        String messageToSend;
-        // Repeat if exit is not typed
-        System.out.println("Input message: ");
-        while (!(messageToSend = kb.readLine()).equals("exit")) {
-            System.out.println("Input message: ");
-            // Send to  server
-            dataOutput.writeBytes(messageToSend + "\n");
+        Integer menu_option = 0;
+        List<Integer> menu_options = Arrays.asList(1, 2, 3, 4);
+
+        while(menu_option == 0 && !menu_options.contains(menu_option)) {
+            // Menu system
+            System.out.println("---- Main menu ----");
+            System.out.println("1. Group chat");
+            System.out.println("2. Direct messages");
+            System.out.println("3. Main menu");
+            System.out.println("4. Close/Leave");
+
+            while(!menu_options.contains(menu_option)) {
+                menu_option = Integer.parseInt(kb.readLine());
+            }
+
+            // Group chat functionality
+            while (menu_option == 1) {
+                String messageToSend;
+                // Repeat if exit is not typed
+                System.out.println("Input message: ");
+                while (!(messageToSend = kb.readLine()).equals("exit")) {
+                    System.out.println("Input message: ");
+                    // Send to server
+                    dataOutput.writeBytes(messageToSend + "\n");
+                }
+                menu_option = 0;
+            }
+
+            // TODO: DM functionality
+            while (menu_option == 2) {
+                System.out.println("Input user id to send message to: ");
+                menu_option = 0;
+            }
+
+            // Makes more sense to user to have menu item for 'Main menu', so we set to 0 immediately
+            if(menu_option == 3) {
+                menu_option = 0;
+            }
+
+            // Exit program
+            if(menu_option == 4) {
+                System.out.println("Closing connection");
+                // Close connection
+                dataOutput.close();
+                kb.close();
+                socket.close();
+                System.out.println("Success! Goodbye.");
+            }
         }
 
-        // Close connection
-        dataOutput.close();
-        kb.close();
-        socket.close();
     }
 }
