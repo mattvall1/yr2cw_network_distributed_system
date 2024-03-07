@@ -46,7 +46,7 @@ public class Server {
                 // Read from client + print received text (this is always looping)
                 // TODO: Send data back to ALL clients (simple GC feature)
                 while ((receivedData = bufferedReader.readLine()) != null) {
-                    // TODO: Have this send to the database
+                    // TODO: Have this send to the database (if time)
                     System.out.println(receivedData);
                 }
 
