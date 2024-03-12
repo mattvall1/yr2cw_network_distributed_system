@@ -47,8 +47,9 @@ public class Server {
                 // TODO: Send data back to ALL clients (simple GC feature)
                 while ((receivedData = bufferedReader.readLine()) != null) {
                     // TODO: Have this send to the database (if time)
-                    System.out.println(receivedData);
+                    System.out.println(userID + ": " + receivedData);
                 }
+                System.out.println(userID + " left.");
 
                 // Close connections
                 bufferedReader.close();
