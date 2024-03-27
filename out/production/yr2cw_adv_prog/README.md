@@ -1,1 +1,0 @@
-# yr2cw_adv_prog
