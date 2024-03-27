@@ -1,4 +1,4 @@
-package client_server_communication.client;
+package client_server_communication.client_pkg;
 
 import java.io.*;
 import java.net.*;
@@ -52,7 +52,16 @@ public class ServerConnection {
 
             // TODO: DM functionality
             while (menu_option == 2) {
-                System.out.println("Input user id to send message to: ");
+                System.out.println("Input user ID to send message to: ");
+                String user_to_message = kb.readLine();
+                System.out.println("ID entered: " + user_to_message);
+
+                // TODO: Check if valid user ID
+                // Send request to server to message other user
+                dataOutput.writeBytes("direct_message_"+user_to_message);
+                dataOutput.flush();
+
+                System.exit(0);
                 menu_option = 0;
             }
 

@@ -1,4 +1,4 @@
-package client_server_communication.server;
+package client_server_communication.server_pkg;
 import java.io.*;
 import java.net.*;
 
@@ -40,14 +40,31 @@ public class Server {
                 // Read data from client
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                // Define received data string
-                String receivedData;
+                // Define variables
+                String receivedData = bufferedReader.readLine();
+                Boolean group_chat = Boolean.TRUE;
+
+                // Check if user wants to send a DM and put them into DM routine
+                if(receivedData.matches("^direct_message_.*")) {
+                    // Split ID from string
+                    int user_to_message = Integer.parseInt(receivedData.substring(15));
+                    System.out.println(user_to_message);
+
+                    while ((receivedData = bufferedReader.readLine()) != null && group_chat == Boolean.FALSE) {
+                        // TODO: Have this send to the database (if time)
+                        System.out.println(userID + ": " + receivedData);
+                    }
+
+                    // After we exit, set group chat to False
+                    group_chat = Boolean.FALSE;
+                }
 
                 // Read from client + print received text (this is always looping)
                 // TODO: Send data back to ALL clients (simple GC feature)
-                while ((receivedData = bufferedReader.readLine()) != null) {
+                while ((receivedData = bufferedReader.readLine()) != null && group_chat == Boolean.TRUE) {
                     // TODO: Have this send to the database (if time)
                     System.out.println(userID + ": " + receivedData);
+
                 }
                 System.out.println(userID + " left.");
 
