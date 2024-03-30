@@ -10,6 +10,7 @@ public class ClientMessaging implements Runnable {
     public BufferedReader in;
     public Socket socket;
     private final Scanner scan = new Scanner(System.in);
+    public Integer user_id;
 
     public ClientMessaging(BufferedReader in, PrintWriter out, Socket socket) {
         this.out = out;
@@ -48,11 +49,13 @@ public class ClientMessaging implements Runnable {
 
     }
 
+    // Get user id from users and send to server
     public void send_user_details() {
         System.out.println("Enter user id: ");
-        Integer user_id = Integer.parseInt(scan.nextLine());
+        // TODO: Check if input is valid
+        user_id = Integer.parseInt(scan.nextLine());
+        // Send to server
         this.out.println(user_id);
-        System.out.println(user_id);
     }
 
     @Override

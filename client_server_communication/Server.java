@@ -1,5 +1,7 @@
 package client_server_communication;
 
+import client_server_communication.server_pkg.ClientHandler;
+
 import java.io.*;
 import java.util.*;
 import java.net.ServerSocket;
@@ -8,7 +10,7 @@ import java.net.Socket;
 
 public class Server {
     // List to store connected clients
-    public static List<String> connected_clients = new ArrayList<>();
+    public static List<Integer> connected_clients = new ArrayList<>();
 
     public static void main(String args[]) throws Exception {
 
@@ -29,31 +31,6 @@ public class Server {
             }
         } catch (IOException err) {
             System.out.println("Error:" + err);
-        }
-    }
-
-    static class ClientHandler implements Runnable {
-        private final Socket socket;
-
-        public ClientHandler(Socket socket) {
-            this.socket = socket;
-        }
-
-        @Override // Override method in superclass
-        public void run() {
-            // Get scanner to read inputs from clients
-            Scanner scan;
-            try {
-                scan = new Scanner(socket.getInputStream());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Loop always reading inputs for users
-            while(scan.hasNextLine()) {
-                System.out.println(scan.nextLine());
-            }
-
         }
     }
 
