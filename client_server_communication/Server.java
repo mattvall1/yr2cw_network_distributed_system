@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class Server {
     // List to store connected clients
-    public static List<Integer> connected_clients = new ArrayList<>();
+    public static HashMap<Integer, Socket> client_map = new HashMap<>();
 
     public static void main(String args[]) throws Exception {
 

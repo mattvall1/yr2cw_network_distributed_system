@@ -8,7 +8,7 @@ public class ClientServerConnectionHelper extends Server {
 
     }
     public static void disconnect_routine(Integer user_id) {
-        connected_clients.remove(user_id);
+        client_map.remove(user_id);
         System.out.println("User: " + user_id + " successfully disconnected.");
     }
 

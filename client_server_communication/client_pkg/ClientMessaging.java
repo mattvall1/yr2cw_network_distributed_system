@@ -23,8 +23,7 @@ public class ClientMessaging implements Runnable {
     private void read() {
         try {
             String in_message = this.in.readLine();
-            // Infinite loop for reading incoming messages
-            while(true) {
+            while (!in_message.equals("exit")){
                 System.out.println(in_message);
                 in_message = this.in.readLine();
             }
@@ -60,6 +59,6 @@ public class ClientMessaging implements Runnable {
 
     @Override
     public void run() {
-
+        read();
     }
 }

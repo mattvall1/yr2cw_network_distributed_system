@@ -2,11 +2,12 @@ package client_server_communication.server_pkg;
 
 import client_server_communication.Server;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientHandler extends Server implements Runnable {
-    private final Socket socket;
+    public static Socket socket;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -18,15 +19,16 @@ public class ClientHandler extends Server implements Runnable {
         Scanner scan;
         try {
             scan = new Scanner(socket.getInputStream());
-            // First get the user id and add to list of clients
+
+            // First get the user id and add to map of clients
             Integer user_id = Integer.valueOf(scan.nextLine());
-            connected_clients.add(user_id);
+            client_map.put(user_id, socket);
 
             // Loop always reading inputs for users
             while(scan.hasNextLine()) {
                 String message = scan.nextLine();
-                System.out.println("RECEIVED MESSAGE: " + message);
-                MessagingHelper.redirect_message(message);
+                ServerUtils.console_output(message);
+                MessagingHelper.redirect_message(user_id, message);
             }
             //TODO: Close connections in class
             ClientServerConnectionHelper.disconnect_routine(user_id);
