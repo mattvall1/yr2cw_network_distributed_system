@@ -17,7 +17,7 @@ public class ClientConnectionHandler implements Runnable {
             PrintWriter out = new PrintWriter(this.client_socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.client_socket.getInputStream()));
 
-            ClientMessaging message_handler = new ClientMessaging(in,out,this.client_socket);
+            ClientMessagingHandler message_handler = new ClientMessagingHandler(in,out,this.client_socket);
             new Thread(message_handler).start();
 
             message_handler.send_user_details();

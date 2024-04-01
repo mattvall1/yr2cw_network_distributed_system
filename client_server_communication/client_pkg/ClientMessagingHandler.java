@@ -5,14 +5,14 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientMessaging implements Runnable {
+public class ClientMessagingHandler implements Runnable {
     public PrintWriter out;
     public BufferedReader in;
     public Socket socket;
     private final Scanner scan = new Scanner(System.in);
     public Integer user_id;
 
-    public ClientMessaging(BufferedReader in, PrintWriter out, Socket socket) {
+    public ClientMessagingHandler(BufferedReader in, PrintWriter out, Socket socket) {
         this.out = out;
         this.in = in;
         this.socket = socket;

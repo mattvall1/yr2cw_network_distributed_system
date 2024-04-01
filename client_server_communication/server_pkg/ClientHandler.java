@@ -2,7 +2,6 @@ package client_server_communication.server_pkg;
 
 import client_server_communication.Server;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -28,7 +27,7 @@ public class ClientHandler extends Server implements Runnable {
             while(scan.hasNextLine()) {
                 String message = scan.nextLine();
                 ServerUtils.console_output(user_id, message);
-                MessagingHelper.redirect_message(user_id, message);
+                ServerMessagingHelper.redirect_message(user_id, message);
             }
             //TODO: Close connections in class
             ClientServerConnectionHelper.disconnect_routine(user_id);

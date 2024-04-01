@@ -1,17 +1,13 @@
 package client_server_communication.server_pkg;
 
-import client_server_communication.Server;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 import java.util.Objects;
 
-public class MessagingHelper extends ClientHandler {
+public class ServerMessagingHelper extends ClientHandler {
 
-    public MessagingHelper(Socket socket) {
+    public ServerMessagingHelper(Socket socket) {
         super(socket);
     }
 
