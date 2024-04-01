@@ -14,14 +14,14 @@ public class ServerMessagingHelper extends ClientHandler {
     // Redirect message as applicable
     public static void redirect_message(Integer sender_id, String message) throws IOException {
         // Check message type
-        if(message.matches("^broadcast_.*")) {
-            send_to_all_clients(sender_id, message);
+        if(message.matches("^brm-.*")) {
+            send_to_all_clients(sender_id, message.substring(4));
 
-        } else if(message.matches("^direct_message_.*")) {
+        } else if(message.matches("^dm-.*")) {
             // Get index of first underscore after user ID, to split message properly
-            int next_underscore = message.indexOf("_", 15);
+            int next_underscore = message.indexOf("-", 3);
             // Send message to client
-            send_to_client(sender_id, Integer.parseInt(message.substring(15, next_underscore)), message.substring(next_underscore + 1));
+            send_to_client(sender_id, Integer.parseInt(message.substring(3, next_underscore)), message.substring(next_underscore + 1));
         }
     }
 

@@ -41,11 +41,13 @@ public class ClientMessagingHandler implements Runnable {
         while (!message.equals("exit")) {
             // Get input then send out to server
             System.out.println("Input message: ");
-            message = scan.nextLine();
-            this.out.println(message);
-
+            message =scan.nextLine();
+            if(check_message_validity(message)) {
+                this.out.println(message);
+            } else {
+                System.out.println("Invalid message, did you start check message requirements?");
+            }
         }
-
     }
 
     // Get user id from users and send to server
@@ -55,6 +57,23 @@ public class ClientMessagingHandler implements Runnable {
         user_id = Integer.parseInt(scan.nextLine());
         // Send to server
         this.out.println(user_id);
+    }
+
+    // Function to make message readable by server
+    private Boolean check_message_validity(String message) {
+        if(message.matches("^brm-.*")) {
+            return true;
+        } else if(message.matches("^dm-\\d+-.*")) {
+            // TODO: Check if we have a valid user_id
+            int send_to = Integer.parseInt(message.substring(3, message.indexOf("-", 3)));
+            if(1 == 1) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+        return false;
     }
 
     @Override
