@@ -27,7 +27,7 @@ public class ClientHandler extends Server implements Runnable {
             // Loop always reading inputs for users
             while(scan.hasNextLine()) {
                 String message = scan.nextLine();
-                ServerUtils.console_output(message);
+                ServerUtils.console_output(user_id, message);
                 MessagingHelper.redirect_message(user_id, message);
             }
             //TODO: Close connections in class
