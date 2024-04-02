@@ -78,7 +78,7 @@ public class ServerMessagingHelper extends ClientHandler {
             UserDetails user_details = client_details.get(client_id);
             Socket client_socket = user_details.socket;
             // Format data nicely and add to list
-            formatted_group_details.add("Client: " + client_id + ", connected at ip: " + socket.getLocalAddress() + ", port: " + socket.getLocalPort());
+            formatted_group_details.add("Client: " + client_id + ", connected at ip: " + client_socket.getLocalAddress() + ", port: " + client_socket.getLocalPort() +". This user " + (user_details.is_coordinator ? "is" : "is not") + " the coordinator.");
         }
 
         // Next, send each item in the array on a seperate line
