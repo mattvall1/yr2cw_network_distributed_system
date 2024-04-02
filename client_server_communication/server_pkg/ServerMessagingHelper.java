@@ -34,10 +34,10 @@ public class ServerMessagingHelper extends ClientHandler {
     private static void send_to_all_clients(Integer sender_id, String message) throws IOException {
 
         // Loop through and send message back to each client as needed
-        for (Integer client_id : client_map.keySet()) {
+        for (Integer client_id : client_details.keySet()) {
             try {
                 // Get socket for user to send data to, then create new writer
-                Socket client_socket = client_map.get(client_id);
+                Socket client_socket = client_details.get(client_id);
                 PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
                 // Send data (only to non-senders)
                 if(!Objects.equals(sender_id, client_id)) {
@@ -57,7 +57,7 @@ public class ServerMessagingHelper extends ClientHandler {
         // Loop through and send message back to each client as needed
         try {
             // Get socket for user to send data to, then create new writer
-            Socket client_socket = client_map.get(receiver_id);
+            Socket client_socket = client_details.get(receiver_id);
             PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
             // Send data
             output.println(sender_id + ":" + message);
@@ -69,18 +69,18 @@ public class ServerMessagingHelper extends ClientHandler {
     public static void send_group_details(Integer requester_id) throws IOException {
         System.out.println("send_group_details");
 
-        // First, convert the client_map to well formatted line-by-line strings in an array
+        // First, convert the client_details to well formatted line-by-line strings in an array
         List<String> formatted_group_details = new ArrayList<String>();
-        for (Integer client_id : client_map.keySet()) {
+        for (Integer client_id : client_details.keySet()) {
             // Get socket for each user
-            Socket client_socket = client_map.get(client_id);
+            Socket client_socket = client_details.get(client_id);
             // Format data nicely and add to list
             formatted_group_details.add("Client: " + client_id + ", connected at ip: " + socket.getLocalAddress() + ", port: " + socket.getLocalPort());
         }
 
         // Next, send each item in the array on a seperate line
         try {
-            Socket client_socket = client_map.get(requester_id);
+            Socket client_socket = client_details.get(requester_id);
             PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
             for(String user_details : formatted_group_details) {
                 output.println(user_details);
