@@ -27,7 +27,7 @@ public class ClientHandler extends Server implements Runnable {
             while(scan.hasNextLine()) {
                 String message = scan.nextLine();
                 ServerUtils.console_output(user_id, message);
-                ServerMessagingHelper.redirect_message(user_id, message);
+                ServerMessagingHelper.redirect_to_correct_message_routine(user_id, message);
             }
             //TODO: Close connections in class
             ClientServerConnectionHelper.disconnect_routine(user_id);

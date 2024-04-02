@@ -1,6 +1,7 @@
 package client_server_communication;
 
 import client_server_communication.server_pkg.ClientHandler;
+import client_server_communication.server_pkg.ServerMessagingHelper;
 
 import java.io.*;
 import java.util.*;

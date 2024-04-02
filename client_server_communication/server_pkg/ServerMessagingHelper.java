@@ -3,6 +3,8 @@ package client_server_communication.server_pkg;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ServerMessagingHelper extends ClientHandler {
@@ -12,7 +14,7 @@ public class ServerMessagingHelper extends ClientHandler {
     }
 
     // Redirect message as applicable
-    public static void redirect_message(Integer sender_id, String message) throws IOException {
+    public static void redirect_to_correct_message_routine(Integer sender_id, String message) throws IOException {
         // Check message type
         if(message.matches("^brm-.*")) {
             send_to_all_clients(sender_id, message.substring(4));
@@ -22,11 +24,14 @@ public class ServerMessagingHelper extends ClientHandler {
             int next_underscore = message.indexOf("-", 3);
             // Send message to client
             send_to_client(sender_id, Integer.parseInt(message.substring(3, next_underscore)), message.substring(next_underscore + 1));
+        } else if(message.matches("^grp-details$")) {
+            System.out.println("GRP DETAILS");
+            send_group_details(sender_id);
         }
     }
 
     // Send to all clients (broadcast message)
-    public static void send_to_all_clients(Integer sender_id, String message) throws IOException {
+    private static void send_to_all_clients(Integer sender_id, String message) throws IOException {
 
         // Loop through and send message back to each client as needed
         for (Integer client_id : client_map.keySet()) {
@@ -47,7 +52,7 @@ public class ServerMessagingHelper extends ClientHandler {
     }
 
     // Send to all clients (private message)
-    public static void send_to_client(Integer sender_id, Integer receiver_id, String message) throws IOException {
+    private static void send_to_client(Integer sender_id, Integer receiver_id, String message) throws IOException {
 
         // Loop through and send message back to each client as needed
         try {
@@ -61,4 +66,27 @@ public class ServerMessagingHelper extends ClientHandler {
         }
     }
 
+    public static void send_group_details(Integer requester_id) throws IOException {
+        System.out.println("send_group_details");
+
+        // First, convert the client_map to well formatted line-by-line strings in an array
+        List<String> formatted_group_details = new ArrayList<String>();
+        for (Integer client_id : client_map.keySet()) {
+            // Get socket for each user
+            Socket client_socket = client_map.get(client_id);
+            // Format data nicely and add to list
+            formatted_group_details.add("Client: " + client_id + ", connected at ip: " + socket.getLocalAddress() + ", port: " + socket.getLocalPort());
+        }
+
+        // Next, send each item in the array on a seperate line
+        try {
+            Socket client_socket = client_map.get(requester_id);
+            PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
+            for(String user_details : formatted_group_details) {
+                output.println(user_details);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

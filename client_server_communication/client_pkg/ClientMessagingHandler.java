@@ -3,6 +3,8 @@ package client_server_communication.client_pkg;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ClientMessagingHandler implements Runnable {
@@ -72,6 +74,10 @@ public class ClientMessagingHandler implements Runnable {
                 return false;
             }
 
+        } else if(message.matches("^grp-details$")) {
+            // Tell the user we are getting group details in this case
+            System.out.println("Full group details:");
+            return true;
         }
         return false;
     }
