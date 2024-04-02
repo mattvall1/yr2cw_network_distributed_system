@@ -21,12 +21,17 @@ public class ClientHandler extends Server implements Runnable {
         Scanner scan;
         try {
             scan = new Scanner(socket.getInputStream());
-            Boolean is_coordinator = false;
+            boolean is_coordinator = false;
+
             // Get user id
             Integer user_id = Integer.valueOf(scan.nextLine());
 
             // First, check if we are the first user in the group, then give them 'coordinator' status
+            if(client_details.isEmpty()) {
+                is_coordinator = true;
+            }
             UserDetails user_details = new UserDetails(socket, is_coordinator);
+
             // Next, add user details to list of clients
             client_details.put(user_id, user_details);
 
