@@ -1,6 +1,7 @@
 package client_server_communication;
 
 import client_server_communication.server_pkg.ClientHandler;
+import client_server_communication.server_pkg.UserDetails;
 
 import java.io.*;
 import java.util.*;
@@ -10,7 +11,7 @@ import java.net.Socket;
 
 public class Server {
     // List to store connected clients
-    public static HashMap<Integer, Socket> client_details = new HashMap<>();
+    public static HashMap<Integer, UserDetails> client_details = new HashMap<>();
 
     public static void main(String args[]) throws Exception {
 

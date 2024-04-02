@@ -37,7 +37,8 @@ public class ServerMessagingHelper extends ClientHandler {
         for (Integer client_id : client_details.keySet()) {
             try {
                 // Get socket for user to send data to, then create new writer
-                Socket client_socket = client_details.get(client_id);
+                UserDetails user_details = client_details.get(client_id);
+                Socket client_socket = user_details.socket;
                 PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
                 // Send data (only to non-senders)
                 if(!Objects.equals(sender_id, client_id)) {
@@ -57,7 +58,8 @@ public class ServerMessagingHelper extends ClientHandler {
         // Loop through and send message back to each client as needed
         try {
             // Get socket for user to send data to, then create new writer
-            Socket client_socket = client_details.get(receiver_id);
+            UserDetails user_details = client_details.get(receiver_id);
+            Socket client_socket = user_details.socket;
             PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
             // Send data
             output.println(sender_id + ":" + message);
@@ -73,17 +75,19 @@ public class ServerMessagingHelper extends ClientHandler {
         List<String> formatted_group_details = new ArrayList<String>();
         for (Integer client_id : client_details.keySet()) {
             // Get socket for each user
-            Socket client_socket = client_details.get(client_id);
+            UserDetails user_details = client_details.get(client_id);
+            Socket client_socket = user_details.socket;
             // Format data nicely and add to list
             formatted_group_details.add("Client: " + client_id + ", connected at ip: " + socket.getLocalAddress() + ", port: " + socket.getLocalPort());
         }
 
         // Next, send each item in the array on a seperate line
         try {
-            Socket client_socket = client_details.get(requester_id);
+            UserDetails user_details = client_details.get(requester_id);
+            Socket client_socket = user_details.socket;
             PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
-            for(String user_details : formatted_group_details) {
-                output.println(user_details);
+            for(String details : formatted_group_details) {
+                output.println(details);
             }
         } catch (IOException e) {
             e.printStackTrace();

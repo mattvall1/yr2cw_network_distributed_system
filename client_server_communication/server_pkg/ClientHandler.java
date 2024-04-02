@@ -3,6 +3,9 @@ package client_server_communication.server_pkg;
 import client_server_communication.Server;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientHandler extends Server implements Runnable {
@@ -18,10 +21,14 @@ public class ClientHandler extends Server implements Runnable {
         Scanner scan;
         try {
             scan = new Scanner(socket.getInputStream());
-
-            // First get the user id and add to map of clients
+            Boolean is_coordinator = false;
+            // Get user id
             Integer user_id = Integer.valueOf(scan.nextLine());
-            client_map.put(user_id, socket);
+
+            // First, check if we are the first user in the group, then give them 'coordinator' status
+            UserDetails user_details = new UserDetails(socket, is_coordinator);
+            // Next, add user details to list of clients
+            client_details.put(user_id, user_details);
 
             // Loop always reading inputs for users
             while(scan.hasNextLine()) {
