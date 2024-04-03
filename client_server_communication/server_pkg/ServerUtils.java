@@ -1,5 +1,8 @@
 package client_server_communication.server_pkg;
 
+import java.net.Socket;
+import java.util.HashMap;
+
 public class ServerUtils {
     // Console output routine for server logging
     public static void console_output(Integer sender_id, String message) {
@@ -23,4 +26,27 @@ public class ServerUtils {
             System.out.println("RECEIVED MESSAGE: " + message);
         }
     }
+
+    public static boolean assign_coordinator(Integer user_id, HashMap client_details) {
+        boolean is_coordinator = false;
+        // First, check if there is any clients in the system yet, if not, this user is the coordinator
+        if(client_details.isEmpty()) {
+            is_coordinator = true;
+        } else {
+
+        }
+        return is_coordinator;
+    }
+
+    public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) {
+        // First, check if we need to assign this user to be coordinator
+        boolean is_coordinator = assign_coordinator(user_id, client_details);
+
+        // Create instance of UserDetails to add client information to
+        UserDetails user_details = new UserDetails(socket, is_coordinator);
+
+        // Next, add user details to list of clients
+        client_details.put(user_id, user_details);
+    }
+
 }
