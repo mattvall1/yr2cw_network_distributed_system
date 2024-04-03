@@ -24,8 +24,8 @@ public class ClientConnectionHandler implements Runnable {
             ClientUtils.initial_menu(message_handler.user_id, true);
             message_handler.send();
 
-            System.out.println("Exit");
-
+            // Close program completely
+            System.exit(0);
         } catch(Exception e) {
             e.printStackTrace();
         }

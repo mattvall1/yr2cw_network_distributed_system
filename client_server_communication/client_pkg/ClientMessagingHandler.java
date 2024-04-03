@@ -78,6 +78,10 @@ public class ClientMessagingHandler implements Runnable {
             // Tell the user we are getting group details in this case
             System.out.println("Full group details:");
             return true;
+        } else if(message.matches("^exit$")) {
+            // Tell the user we are getting group details in this case
+            System.out.println("Sending exit request to server...");
+            return true;
         }
         return false;
     }

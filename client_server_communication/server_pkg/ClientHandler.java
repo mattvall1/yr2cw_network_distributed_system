@@ -41,10 +41,9 @@ public class ClientHandler extends Server implements Runnable {
                 ServerUtils.console_output(user_id, message);
                 ServerMessagingHelper.redirect_to_correct_message_routine(user_id, message);
             }
-            //TODO: Close connections in class
-            ClientServerConnectionHelper.disconnect_routine(user_id);
-            socket.close();
-            scan.close();
+
+            // Close connections
+            ClientServerConnectionHelper.disconnect_routine(user_id, scan);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
