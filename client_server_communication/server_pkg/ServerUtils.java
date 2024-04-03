@@ -16,7 +16,10 @@ public class ServerUtils {
 
             // Print to console
             System.out.println("Direct message " + sender_id + " -> " + receiver + ":" + message.substring(next_dash + 1));
+        } else if(message.matches("^exit$")) {
+            System.out.println("User " + sender_id + " will now be disconnected...");
         } else {
+            // This code shouldn't run
             System.out.println("RECEIVED MESSAGE: " + message);
         }
     }

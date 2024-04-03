@@ -21,7 +21,7 @@ public class ClientServerConnectionHelper extends Server {
 
         // Finally, remove user from map
         client_details.remove(user_id);
-        System.out.println("User: " + user_id + " successfully disconnected.");
+        System.out.println("User " + user_id + " successfully disconnected. ");
     }
 
 }
