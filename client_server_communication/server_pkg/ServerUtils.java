@@ -27,23 +27,15 @@ public class ServerUtils {
         }
     }
 
-    public static boolean assign_coordinator(Integer user_id, HashMap client_details) {
-        boolean is_coordinator = false;
-        // First, check if there is any clients in the system yet, if not, this user is the coordinator
-        if(client_details.isEmpty()) {
-            is_coordinator = true;
-        } else {
-
-        }
-        return is_coordinator;
-    }
+//    public static boolean assign_new_coordinator(HashMap client_details) {
+//        return client_details.isEmpty();
+//    }
 
     public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) {
         // First, check if we need to assign this user to be coordinator
-        boolean is_coordinator = assign_coordinator(user_id, client_details);
 
         // Create instance of UserDetails to add client information to
-        UserDetails user_details = new UserDetails(socket, is_coordinator);
+        UserDetails user_details = new UserDetails(socket, client_details.isEmpty());
 
         // Next, add user details to list of clients
         client_details.put(user_id, user_details);

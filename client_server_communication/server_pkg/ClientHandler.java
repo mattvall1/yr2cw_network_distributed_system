@@ -35,6 +35,11 @@ public class ClientHandler extends Server implements Runnable {
                 ServerUtils.console_output(user_id, message);
                 ServerMessagingHelper.redirect_to_correct_message_routine(user_id, message);
             }
+            // Check if coordinator has left and needs reassigning before we close connections
+            UserDetails user_details = client_details.get(user_id);
+            if(user_details.is_coordinator) {
+                ServerUtils.assign_coordinator(client_details);
+            }
 
             // Close connections
             ClientServerConnectionHelper.disconnect_routine(user_id, scan);
