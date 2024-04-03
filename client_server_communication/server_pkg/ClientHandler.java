@@ -35,10 +35,27 @@ public class ClientHandler extends Server implements Runnable {
                 ServerUtils.console_output(user_id, message);
                 ServerMessagingHelper.redirect_to_correct_message_routine(user_id, message);
             }
+
             // Check if coordinator has left and needs reassigning before we close connections
             UserDetails user_details = client_details.get(user_id);
             if(user_details.is_coordinator) {
-                ServerUtils.assign_coordinator(client_details);
+                // TODO: Rewrite this to not use a loop
+                // Reassign coordinator role to first client
+                for (Integer client_id : client_details.keySet()) {
+                    UserDetails user_to_update = client_details.get(client_id);
+                    // First, make sure we don't update the user we're about to delete
+                    if(!user_to_update.is_coordinator) {
+                        // Remove the user from the main hashmap
+                        client_details.remove(user_id);
+
+                        // Set the is_coordinator param to true
+                        user_to_update.is_coordinator = true;
+
+                        // Re-add the user with the updated is_coordinator status
+                        client_details.put(user_id, user_details);
+                        break;
+                    }
+                }
             }
 
             // Close connections
