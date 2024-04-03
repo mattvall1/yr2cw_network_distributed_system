@@ -21,9 +21,9 @@ public class ServerMessagingHelper extends ClientHandler {
 
         } else if(message.matches("^dm-.*")) {
             // Get index of first underscore after user ID, to split message properly
-            int next_underscore = message.indexOf("-", 3);
+            int next_dash = message.indexOf("-", 3);
             // Send message to client
-            send_to_client(sender_id, Integer.parseInt(message.substring(3, next_underscore)), message.substring(next_underscore + 1));
+            send_to_client(sender_id, Integer.parseInt(message.substring(3, next_dash)), message.substring(next_dash + 1));
         } else if(message.matches("^grp-details$")) {
             System.out.println("GRP DETAILS");
             send_group_details(sender_id);
