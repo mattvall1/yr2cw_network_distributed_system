@@ -21,7 +21,6 @@ public class ClientHandler extends Server implements Runnable {
         Scanner scan;
         try {
             scan = new Scanner(socket.getInputStream());
-            boolean is_coordinator = false;
 
             // Get user id
             Integer user_id = Integer.valueOf(scan.nextLine());
