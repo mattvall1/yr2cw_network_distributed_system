@@ -17,6 +17,7 @@ public class CoordinatorHandler implements Runnable {
             try {
                 // Wait for 20 seconds and send a message to receive details
                 TimeUnit.SECONDS.sleep(20);
+                System.out.println("Requesting group details...");
                 this.out.println("act-grp-details");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

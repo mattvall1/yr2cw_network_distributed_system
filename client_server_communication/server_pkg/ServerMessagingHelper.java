@@ -17,15 +17,19 @@ public class ServerMessagingHelper extends ClientHandler {
     public static void redirect_to_correct_message_routine(Integer sender_id, String message) throws IOException {
         // Check message type
         if(message.matches("^brm-.*")) {
+            // Broadcast message
             send_to_all_clients(sender_id, message.substring(4));
-
         } else if(message.matches("^dm-.*")) {
+            // Direct message
             // Get index of first underscore after user ID, to split message properly
             int next_dash = message.indexOf("-", 3);
             // Send message to client
             send_to_client(sender_id, Integer.parseInt(message.substring(3, next_dash)), message.substring(next_dash + 1));
         } else if(message.matches("^grp-details$")) {
-            System.out.println("GRP DETAILS");
+            // Group details request
+            send_group_details(sender_id);
+        } else if(message.matches("^act-grp-details$")) {
+            // Group details request (coordinator)
             send_group_details(sender_id);
         }
     }
@@ -69,8 +73,6 @@ public class ServerMessagingHelper extends ClientHandler {
     }
 
     public static void send_group_details(Integer requester_id) throws IOException {
-        System.out.println("send_group_details");
-
         // First, convert the client_details to well formatted line-by-line strings in an array
         List<String> formatted_group_details = new ArrayList<String>();
         for (Integer client_id : client_details.keySet()) {
