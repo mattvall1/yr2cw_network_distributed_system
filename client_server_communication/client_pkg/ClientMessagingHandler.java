@@ -86,8 +86,42 @@ public class ClientMessagingHandler implements Runnable {
         return false;
     }
 
+    // TODO: Rename this function (it's bad)
+    // If we are a coordinator, we need to run two threads, one for the continuous read and one for coordinator requests
+    private void coordinator_thread_handler() throws InterruptedException {
+        // Setup threads
+        Thread reader = new Thread() {
+            public void run() {
+                // Run read scripts
+                read();
+            }
+        };
+
+        Thread coordinator_request_handler = new Thread() {
+            public void run() {
+                // Get coordinator handler
+                CoordinatorHandler coordinatorHandler = new CoordinatorHandler(out);
+                coordinatorHandler.run();
+            }
+        };
+
+        // Run coordinator handler alongside read script
+        reader.start();
+        coordinator_request_handler.start();
+
+        // Close threads when they're no longer needed
+        reader.join();
+        coordinator_request_handler.join();
+    }
+
     @Override
     public void run() {
+        // We need two threads here, one for the read functionality and one for the coordinator requests
+        try {
+            coordinator_thread_handler();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         read();
     }
 }
