@@ -122,6 +122,5 @@ public class ClientMessagingHandler implements Runnable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        read();
     }
 }
