@@ -52,6 +52,10 @@ public class ClientHandler extends Server implements Runnable {
 
                         // Re-add the user with the updated is_coordinator status
                         client_details.put(user_id, user_details);
+
+                        // Tell the user that they are now the coordinator
+                        ServerMessagingHelper.send_new_coordinator_info(client_id);
+
                         break;
                     }
                 }

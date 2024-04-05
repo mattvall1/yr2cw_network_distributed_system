@@ -27,10 +27,6 @@ public class ServerUtils {
         }
     }
 
-//    public static boolean assign_new_coordinator(HashMap client_details) {
-//        return client_details.isEmpty();
-//    }
-
     public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) {
         // First, check if we need to assign this user to be coordinator
 

@@ -58,15 +58,15 @@ public class ServerMessagingHelper extends ClientHandler {
 
     // Send to all clients (private message)
     private static void send_to_client(Integer sender_id, Integer receiver_id, String message) throws IOException {
-
         // Loop through and send message back to each client as needed
         try {
             // Get socket for user to send data to, then create new writer
             UserDetails user_details = client_details.get(receiver_id);
             Socket client_socket = user_details.socket;
             PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
-            // Send data
-            output.println(sender_id + ":" + message);
+
+            // Send data: If sender_id is 0, this is the server, tell the receiver accordingly
+            output.println(sender_id != 0 ? sender_id + ": " + message : "Server: " + message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,4 +95,9 @@ public class ServerMessagingHelper extends ClientHandler {
             e.printStackTrace();
         }
     }
+
+    public static void send_new_coordinator_info(Integer new_coordinator) throws IOException {
+        send_to_client(0, new_coordinator, "You are now the coordinator, you will now receive group information every 20 seconds.");
+    }
+
 }
