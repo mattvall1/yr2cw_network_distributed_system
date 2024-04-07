@@ -12,6 +12,7 @@ import java.net.Socket;
 public class Server {
     // List to store connected clients
     public static HashMap<Integer, UserDetails> client_details = new HashMap<>();
+    public static Integer current_coordinator;
 
     public static void main(String args[]) throws Exception {
 

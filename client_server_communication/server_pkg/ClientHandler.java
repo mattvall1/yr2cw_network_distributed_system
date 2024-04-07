@@ -28,6 +28,9 @@ public class ClientHandler extends Server implements Runnable {
             // Add client details into main hashmap
             ServerUtils.add_client_details(client_details, user_id, socket);
 
+            // Send coordinator details to new clients
+            if(client_details.size() > 1) ServerMessagingHelper.send_coordinator_info(user_id);
+
             // Loop always reading inputs for users
             while(scan.hasNextLine()) {
                 String message = scan.nextLine();
@@ -52,6 +55,9 @@ public class ClientHandler extends Server implements Runnable {
 
                         // Re-add the user with the updated is_coordinator status
                         client_details.put(user_id, user_details);
+
+                        // Set global coordinator id
+                        current_coordinator = client_id;
 
                         // Tell the user that they are now the coordinator
                         ServerMessagingHelper.send_new_coordinator_info(client_id);

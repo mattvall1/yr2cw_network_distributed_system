@@ -106,4 +106,14 @@ public class ServerMessagingHelper extends ClientHandler {
         output.println("coord");
     }
 
+    public static void send_coordinator_info(Integer receiver_id) throws IOException {
+        // Get socket details
+        UserDetails user_details = client_details.get(receiver_id);
+        Socket client_socket = user_details.socket;
+        PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
+
+        // Send coordinator
+        output.println("The coordinator is currently: " + current_coordinator);
+    }
+
 }

@@ -1,12 +1,14 @@
 package client_server_communication.server_pkg;
 
+import client_server_communication.Server;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-public class ServerUtils {
+public class ServerUtils extends Server {
     // Console output routine for server logging
     public static void console_output(Integer sender_id, String message) {
         // Create datetime string to put on every output
@@ -38,6 +40,10 @@ public class ServerUtils {
 
     public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) throws IOException {
         Boolean is_coordinator = client_details.isEmpty();
+
+        // If this is the coordinator, set global coordinator id
+        if(is_coordinator) current_coordinator = user_id;
+
 
         // Create instance of UserDetails to add client information
         UserDetails user_details = new UserDetails(socket, is_coordinator);
