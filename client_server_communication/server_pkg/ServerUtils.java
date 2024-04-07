@@ -19,9 +19,13 @@ public class ServerUtils {
             int receiver = Integer.parseInt(message.substring(3, next_dash));
 
             // Print to console
-            System.out.println("Direct message " + sender_id + " -> " + receiver + ":" + message.substring(next_dash + 1));
+            System.out.println("Direct message from " + sender_id + " to " + receiver + ":" + message.substring(next_dash + 1));
         } else if(message.matches("^exit$")) {
             System.out.println("User " + sender_id + " will now be disconnected...");
+        } else if(message.matches("^act-grp-details$")) {
+            System.out.println("Coordinator requested active group details");
+        } else if(message.matches("^grp-details$")) {
+            System.out.println("User " + sender_id + " requested group details");
         } else {
             // This code shouldn't run, keep this for potential debugging
             System.out.println("RECEIVED MESSAGE: " + message);
