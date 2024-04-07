@@ -13,6 +13,7 @@ public class ClientMessagingHandler implements Runnable {
     public Socket socket;
     private final Scanner scan = new Scanner(System.in);
     public Integer user_id;
+    public Boolean is_coordinator;
 
     public ClientMessagingHandler(BufferedReader in, PrintWriter out, Socket socket) {
         this.out = out;
@@ -26,12 +27,23 @@ public class ClientMessagingHandler implements Runnable {
         try {
             String in_message = this.in.readLine();
             while (!in_message.equals("exit")){
+                if(in_message.matches("^coord$")) {
+                    System.out.println("You are the coordinator, you will receive group information every 20 seconds.");
+                    is_coordinator = true;
+                    // If we become the coordinator, we need to kill this read script and run the multithreading script which includes coordinator details routine
+                    break;
+                }
                 System.out.println(in_message);
                 in_message = this.in.readLine();
             }
 
+            // Run multithreaded coordinator routines if needed
+            if(is_coordinator && !in_message.equals("exit")) coordinator_thread_handler();
+
         } catch(IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -116,11 +128,6 @@ public class ClientMessagingHandler implements Runnable {
 
     @Override
     public void run() {
-        // We need two threads here, one for the read functionality and one for the coordinator requests
-        try {
-            coordinator_thread_handler();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        read();
     }
 }

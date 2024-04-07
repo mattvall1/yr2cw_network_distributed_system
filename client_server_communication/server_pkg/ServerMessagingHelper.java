@@ -97,7 +97,13 @@ public class ServerMessagingHelper extends ClientHandler {
     }
 
     public static void send_new_coordinator_info(Integer new_coordinator) throws IOException {
-        send_to_client(0, new_coordinator, "You are now the coordinator, you will now receive group information every 20 seconds.");
+        // Get socket details
+        UserDetails user_details = client_details.get(new_coordinator);
+        Socket client_socket = user_details.socket;
+        PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
+
+        // Send coordinator
+        output.println("coord");
     }
 
 }

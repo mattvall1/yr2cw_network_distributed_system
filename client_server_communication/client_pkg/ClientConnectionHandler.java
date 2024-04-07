@@ -21,7 +21,7 @@ public class ClientConnectionHandler implements Runnable {
             new Thread(message_handler).start();
 
             message_handler.send_user_details();
-            ClientUtils.initial_menu(message_handler.user_id, true);
+            ClientUtils.initial_menu(message_handler.user_id);
             message_handler.send();
 
             // Close program completely

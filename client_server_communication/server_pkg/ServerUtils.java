@@ -1,5 +1,6 @@
 package client_server_communication.server_pkg;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 
@@ -22,19 +23,22 @@ public class ServerUtils {
         } else if(message.matches("^exit$")) {
             System.out.println("User " + sender_id + " will now be disconnected...");
         } else {
-            // This code shouldn't run
+            // This code shouldn't run, keep this for potential debugging
             System.out.println("RECEIVED MESSAGE: " + message);
         }
     }
 
-    public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) {
-        // First, check if we need to assign this user to be coordinator
+    public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) throws IOException {
+        Boolean is_coordinator = client_details.isEmpty();
 
-        // Create instance of UserDetails to add client information to
-        UserDetails user_details = new UserDetails(socket, client_details.isEmpty());
+        // Create instance of UserDetails to add client information
+        UserDetails user_details = new UserDetails(socket, is_coordinator);
 
         // Next, add user details to list of clients
         client_details.put(user_id, user_details);
+
+        // If this user is the coordinator, tell them.
+        if(is_coordinator) ServerMessagingHelper.send_new_coordinator_info(user_id);
     }
 
 }
