@@ -51,7 +51,7 @@ public class ServerUtils {
 
     public static String get_current_datetime() {
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
 
         return now.format(formatter);
     }

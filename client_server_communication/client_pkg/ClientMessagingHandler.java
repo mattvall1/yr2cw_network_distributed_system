@@ -33,7 +33,7 @@ public class ClientMessagingHandler implements Runnable {
                     // If we become the coordinator, we need to kill this read script and run the multithreading script which includes coordinator details routine
                     break;
                 }
-                System.out.println(in_message);
+                System.out.println(ClientUtils.get_current_datetime() + " | " + in_message);
                 in_message = this.in.readLine();
             }
 
