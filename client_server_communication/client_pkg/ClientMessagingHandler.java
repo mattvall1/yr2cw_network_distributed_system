@@ -3,8 +3,6 @@ package client_server_communication.client_pkg;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ClientMessagingHandler implements Runnable {

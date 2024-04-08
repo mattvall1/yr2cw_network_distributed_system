@@ -3,9 +3,6 @@ package client_server_communication.server_pkg;
 import client_server_communication.Server;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class ClientHandler extends Server implements Runnable {
