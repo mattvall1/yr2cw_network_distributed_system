@@ -1,6 +1,7 @@
 package client_server_communication;
 
 import client_server_communication.server_pkg.ClientHandler;
+import client_server_communication.server_pkg.ServerUtils;
 import client_server_communication.server_pkg.UserDetails;
 
 import java.io.*;
@@ -23,6 +24,9 @@ public class Server {
             while (true) {
                 // Connect to client socket
                 Socket socket = serverSocket.accept();
+
+                // Send client_details hashmap to client (for id checking)
+                ServerUtils.send_client_ids(socket);
 
                 // Handle client connection in a new thread
                 new Thread(new ClientHandler(socket)).start();

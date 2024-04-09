@@ -20,7 +20,7 @@ public class ClientConnectionHandler implements Runnable {
             ClientMessagingHandler message_handler = new ClientMessagingHandler(in,out,this.client_socket);
             new Thread(message_handler).start();
 
-            message_handler.send_user_details();
+            message_handler.send_user_id();
             ClientUtils.initial_menu(message_handler.user_id);
             message_handler.send();
 

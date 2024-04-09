@@ -3,9 +3,10 @@ package client_server_communication.client_pkg;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class ClientMessagingHandler implements Runnable {
+public class ClientMessagingHandler implements Runnable  {
     public PrintWriter out;
     public BufferedReader in;
     public Socket socket;
@@ -17,6 +18,21 @@ public class ClientMessagingHandler implements Runnable {
         this.out = out;
         this.in = in;
         this.socket = socket;
+    }
+
+    // Choose read script (multithreading if we are coordinator/normal read if not)
+    private void choose_read_script() throws InterruptedException, IOException {
+        // Second received message is always coordinator check
+        String in_message = this.in.readLine();
+
+        if(in_message.matches("^coord$")) {
+            System.out.println("You are the coordinator, you will receive group information every 20 seconds.");
+            is_coordinator = true;
+            // If we become the coordinator, we need to run multithreading
+            coordinator_thread_handler();
+        } else {
+            read();
+        }
     }
 
 
@@ -31,6 +47,8 @@ public class ClientMessagingHandler implements Runnable {
                     // If we become the coordinator, we need to kill this read script and run the multithreading script which includes coordinator details routine
                     break;
                 }
+
+                // General console outputting
                 System.out.println(ClientUtils.get_current_datetime() + " | " + in_message);
                 in_message = this.in.readLine();
             }
@@ -62,11 +80,45 @@ public class ClientMessagingHandler implements Runnable {
         }
     }
 
+    // Get all current client ids
+    private Set get_client_ids() throws IOException {
+        String client_ids = this.in.readLine();
+        client_ids = client_ids.replaceFirst("^client-ids-", "");
+        Set<Integer> client_ids_set = new HashSet<>();
+
+        // If the string isn't blank and includes some ids, convert to a set
+        if(client_ids.matches("\\[\\d+(, \\d+)*\\]")) {
+            client_ids_set = Arrays.stream(client_ids.replaceAll("[\\[\\]]", "").split(", ")).map(Integer::parseInt).collect(Collectors.toSet());
+        }
+        return client_ids_set;
+    }
+
     // Get user id from users and send to server
-    public void send_user_details() {
-        System.out.println("Enter user id: ");
-        // TODO: Check if input is valid
-        user_id = Integer.parseInt(scan.nextLine());
+    public void send_user_id() throws IOException {
+        // Setup variables
+        Set<Integer> client_ids_set = get_client_ids();
+        Boolean valid_id = false;
+        String id_to_check = "";
+
+        System.out.println("The current list of client IDs is: " + client_ids_set);
+        while(!valid_id) {
+            System.out.println("Enter user id: ");
+            id_to_check = scan.nextLine();
+            // First, check it's an integer
+            if(id_to_check.matches("\\d+")) {
+                Integer id_to_check_int = Integer.parseInt(id_to_check);
+                // Next, check it isn't already taken by another client
+                if(!client_ids_set.contains(id_to_check_int)) {
+                    valid_id = true;
+                } else {
+                    System.out.println("Your ID is already taken. Try again.");
+                }
+            } else {
+                System.out.println("Your ID must be numerical only. Try again.");
+            }
+        }
+        user_id = Integer.parseInt(id_to_check);
+
         // Send to server
         this.out.println(user_id);
     }
@@ -96,7 +148,6 @@ public class ClientMessagingHandler implements Runnable {
         return false;
     }
 
-    // TODO: Rename this function (it's bad)
     // If we are a coordinator, we need to run two threads, one for the continuous read and one for coordinator requests
     private void coordinator_thread_handler() throws InterruptedException {
         // Setup threads
@@ -126,6 +177,12 @@ public class ClientMessagingHandler implements Runnable {
 
     @Override
     public void run() {
-        read();
+        try {
+            choose_read_script();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

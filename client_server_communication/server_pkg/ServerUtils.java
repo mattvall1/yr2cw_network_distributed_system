@@ -3,10 +3,12 @@ package client_server_communication.server_pkg;
 import client_server_communication.Server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ServerUtils extends Server {
     // Console output routine for server logging
@@ -60,6 +62,14 @@ public class ServerUtils extends Server {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
 
         return now.format(formatter);
+    }
+
+    public static void send_client_ids(Socket socket) throws IOException {
+        Set client_ids = client_details.keySet();
+
+        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        output.println("client-ids-" + client_ids);
+
     }
 
 }
