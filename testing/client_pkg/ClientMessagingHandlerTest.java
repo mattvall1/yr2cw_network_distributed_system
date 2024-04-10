@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientMessagingHandlerTest {
@@ -29,12 +29,25 @@ public class ClientMessagingHandlerTest {
     @Mock
     private Socket socket;
 
-    @Test
+    @Mock
+    private Scanner scanner;
+
+    @Test // THIS DOESNT WORK
     public void test_send_user_id() throws IOException {
-        when(in.readLine()).thenReturn("client-ids-[1, 2, 3]");
+        // Arrange
+        Set<Integer> client_ids_set = new HashSet<>();
+        client_ids_set.add(1);
+        client_ids_set.add(2);
         ClientMessagingHandler clientMessagingHandler = new ClientMessagingHandler(in, out, socket);
+        clientMessagingHandler.client_ids_set = client_ids_set;
+        clientMessagingHandler.scan = scanner;
+        when(in.readLine()).thenReturn("[1, 2, 3]", "3");
+
+        // Act
         clientMessagingHandler.send_user_id();
-        verify(out).println(anyInt());
+
+        // Assert
+        verify(out, times(1)).println(3);
     }
 
     @Test

@@ -10,7 +10,7 @@ public class ClientMessagingHandler implements Runnable  {
     public PrintWriter out;
     public BufferedReader in;
     public Socket socket;
-    private final Scanner scan = new Scanner(System.in);
+    public Scanner scan = new Scanner(System.in);
     public Integer user_id;
     public Boolean is_coordinator;
     public Set<Integer> client_ids_set = new HashSet<>();
