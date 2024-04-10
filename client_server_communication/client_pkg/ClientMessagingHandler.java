@@ -13,7 +13,7 @@ public class ClientMessagingHandler implements Runnable  {
     private final Scanner scan = new Scanner(System.in);
     public Integer user_id;
     public Boolean is_coordinator;
-    private Set<Integer> client_ids_set;
+    public Set<Integer> client_ids_set = new HashSet<>();
 
     public ClientMessagingHandler(BufferedReader in, PrintWriter out, Socket socket) {
         this.out = out;
@@ -85,7 +85,6 @@ public class ClientMessagingHandler implements Runnable  {
     private Set get_client_ids() throws IOException {
         String client_ids = this.in.readLine();
         client_ids = client_ids.replaceFirst("^client-ids-", "");
-        Set<Integer> client_ids_set = new HashSet<>();
 
         // If the string isn't blank and includes some ids, convert to a set
         if(client_ids.matches("\\[\\d+(, \\d+)*\\]")) {
