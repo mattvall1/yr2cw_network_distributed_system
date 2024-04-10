@@ -36,6 +36,32 @@ public class ClientMessagingHandler implements Runnable  {
         }
     }
 
+    // If we are a coordinator, we need to run two threads, one for the continuous read and one for coordinator requests
+    private void coordinator_thread_handler() throws InterruptedException {
+        // Setup threads
+        Thread reader = new Thread() {
+            public void run() {
+                // Run read scripts
+                read();
+            }
+        };
+
+        Thread coordinator_request_handler = new Thread() {
+            public void run() {
+                // Get coordinator handler
+                CoordinatorHandler coordinatorHandler = new CoordinatorHandler(out);
+                coordinatorHandler.run();
+            }
+        };
+
+        // Run coordinator handler alongside read script
+        reader.start();
+        coordinator_request_handler.start();
+
+        // Close threads when they're no longer needed
+        reader.join();
+        coordinator_request_handler.join();
+    }
 
     // Reading incoming data
     private void read() {
@@ -144,33 +170,6 @@ public class ClientMessagingHandler implements Runnable  {
             return true;
         }
         return false;
-    }
-
-    // If we are a coordinator, we need to run two threads, one for the continuous read and one for coordinator requests
-    private void coordinator_thread_handler() throws InterruptedException {
-        // Setup threads
-        Thread reader = new Thread() {
-            public void run() {
-                // Run read scripts
-                read();
-            }
-        };
-
-        Thread coordinator_request_handler = new Thread() {
-            public void run() {
-                // Get coordinator handler
-                CoordinatorHandler coordinatorHandler = new CoordinatorHandler(out);
-                coordinatorHandler.run();
-            }
-        };
-
-        // Run coordinator handler alongside read script
-        reader.start();
-        coordinator_request_handler.start();
-
-        // Close threads when they're no longer needed
-        reader.join();
-        coordinator_request_handler.join();
     }
 
     @Override
