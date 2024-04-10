@@ -25,11 +25,8 @@ public class ServerMessagingHelper extends ClientHandler {
             int next_dash = message.indexOf("-", 3);
             // Send message to client
             send_to_client(sender_id, Integer.parseInt(message.substring(3, next_dash)), message.substring(next_dash + 1));
-        } else if(message.matches("^grp-details$")) {
+        } else if(message.matches("^grp-details$") || message.matches("^act-grp-details$")) {
             // Group details request
-            send_group_details(sender_id);
-        } else if(message.matches("^act-grp-details$")) {
-            // Group details request (coordinator)
             send_group_details(sender_id);
         }
     }
