@@ -3,8 +3,8 @@ import java.net.Socket;
 
 // UserDetails class for adding coordinator details
 public class UserDetails {
-    Socket socket;
-    boolean is_coordinator;
+    public Socket socket;
+    public boolean is_coordinator;
 
     public UserDetails(Socket socket, boolean is_coordinator) {
         this.socket = socket;
