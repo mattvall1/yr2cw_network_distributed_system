@@ -18,8 +18,8 @@ public class ClientUtilsTest {
 
     @Test
     public void test_initial_menu() {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
 
         ClientUtils.initial_menu(1);
 
@@ -29,7 +29,7 @@ public class ClientUtilsTest {
                 "To get details of all group members, enter 'grp-details'\n" +
                 "To exit/leave the chat program, press ctrl+C\n";
 
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput, out.toString());
     }
 
     @Test
