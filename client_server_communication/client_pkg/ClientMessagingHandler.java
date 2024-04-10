@@ -13,6 +13,7 @@ public class ClientMessagingHandler implements Runnable  {
     private final Scanner scan = new Scanner(System.in);
     public Integer user_id;
     public Boolean is_coordinator;
+    private Set<Integer> client_ids_set;
 
     public ClientMessagingHandler(BufferedReader in, PrintWriter out, Socket socket) {
         this.out = out;
@@ -96,7 +97,7 @@ public class ClientMessagingHandler implements Runnable  {
     // Get user id from users and send to server
     public void send_user_id() throws IOException {
         // Setup variables
-        Set<Integer> client_ids_set = get_client_ids();
+        client_ids_set = get_client_ids();
         Boolean valid_id = false;
         String id_to_check = "";
 
@@ -128,14 +129,12 @@ public class ClientMessagingHandler implements Runnable  {
         if(message.matches("^brm-.*")) {
             return true;
         } else if(message.matches("^dm-\\d+-.*")) {
-            // TODO: Check if we have a valid user_id
             int send_to = Integer.parseInt(message.substring(3, message.indexOf("-", 3)));
-            if(1 == 1) {
+            if(client_ids_set.contains(send_to)) {
                 return true;
             } else {
-                return false;
+                System.out.println("This user does not exist.");
             }
-
         } else if(message.matches("^grp-details$")) {
             // Tell the user we are getting group details in this case
             System.out.println("Full group details:");

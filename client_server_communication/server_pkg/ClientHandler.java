@@ -38,7 +38,6 @@ public class ClientHandler extends Server implements Runnable {
             // Check if coordinator has left and needs reassigning before we close connections
             UserDetails user_details = client_details.get(user_id);
             if(user_details.is_coordinator) {
-                // TODO: Rewrite this to not use a loop
                 // Reassign coordinator role to first client
                 for (Integer client_id : client_details.keySet()) {
                     UserDetails user_to_update = client_details.get(client_id);
