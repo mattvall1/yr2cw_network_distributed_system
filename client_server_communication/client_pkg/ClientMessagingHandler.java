@@ -124,7 +124,7 @@ public class ClientMessagingHandler implements Runnable  {
     }
 
     // Function to make message readable by server
-    private Boolean check_message_validity(String message) {
+    public Boolean check_message_validity(String message) {
         if(message.matches("^brm-.*")) {
             return true;
         } else if(message.matches("^dm-\\d+-.*")) {
