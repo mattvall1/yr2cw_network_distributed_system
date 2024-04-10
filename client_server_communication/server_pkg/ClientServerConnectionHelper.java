@@ -7,10 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientServerConnectionHelper extends Server {
-    public static void connection_routine(String message) {
 
-
-    }
     public static void disconnect_routine(Integer user_id, Scanner scan) throws IOException {
         // First, close scanner
         scan.close();
