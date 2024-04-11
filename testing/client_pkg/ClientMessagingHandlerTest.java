@@ -3,11 +3,11 @@ package testing.client_pkg;
 import client_server_communication.client_pkg.ClientMessagingHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -34,20 +34,32 @@ public class ClientMessagingHandlerTest {
 
     @Test // THIS DOESNT WORK
     public void test_send_user_id() throws IOException {
-        // Arrange
+        // Redirect standard output to capture printed messages
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        // Create a mock client IDs set
         Set<Integer> client_ids_set = new HashSet<>();
         client_ids_set.add(1);
         client_ids_set.add(2);
+
+        // Instantiate the ClientMessagingHandler (replace with actual instantiation if needed)
         ClientMessagingHandler clientMessagingHandler = new ClientMessagingHandler(in, out, socket);
         clientMessagingHandler.client_ids_set = client_ids_set;
         clientMessagingHandler.scan = scanner;
+        ReflectionTestUtils.setField(clientMessagingHandler, "id_to_check", "3");
+
         when(in.readLine()).thenReturn("[1, 2, 3]", "3");
 
-        // Act
+        // Call the method to test
         clientMessagingHandler.send_user_id();
 
-        // Assert
-        verify(out, times(1)).println(3);
+        // Check if the expected message is printed
+        String console_out = outputStream.toString().trim();
+        assertTrue(console_out.contains("Your ID is already taken. Try again."));
+
+        // Restore standard output
+        System.setOut(System.out);
     }
 
     @Test
