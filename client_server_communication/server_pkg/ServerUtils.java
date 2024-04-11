@@ -6,8 +6,6 @@ import client_server_communication.client_pkg.ClientUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -63,11 +61,17 @@ public class ServerUtils extends Server {
     }
 
     public static void send_client_ids(Socket socket) throws IOException {
-        Set client_ids = client_details.keySet();
+        Set<Integer> client_ids = client_details.keySet();
 
         PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
         output.println("client-ids-" + client_ids);
 
     }
+
+    public static Set get_client_ids() throws IOException {
+        return client_details.keySet();
+    }
+
+
 
 }

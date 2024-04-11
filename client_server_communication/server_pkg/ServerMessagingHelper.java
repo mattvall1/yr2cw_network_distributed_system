@@ -1,11 +1,14 @@
 package client_server_communication.server_pkg;
 
+import client_server_communication.Server;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class ServerMessagingHelper extends ClientHandler {
 
@@ -23,8 +26,16 @@ public class ServerMessagingHelper extends ClientHandler {
             // Direct message
             // Get index of first underscore after user ID, to split message properly
             int next_dash = message.indexOf("-", 3);
+            int reciever_id = Integer.parseInt(message.substring(3, next_dash));
+            Set client_ids = ServerUtils.get_client_ids();
             // Send message to client
-            send_to_client(sender_id, Integer.parseInt(message.substring(3, next_dash)), message.substring(next_dash + 1));
+            // Check we have a valid id, if not, ignore
+            if(client_ids.contains(reciever_id)) {
+                send_to_client(sender_id,reciever_id, message.substring(next_dash + 1));
+            } else {
+                System.out.println("Client " + reciever_id + " not found. Direct message from " + sender_id +" ignored.");
+            }
+
         } else if(message.matches("^grp-details$") || message.matches("^act-grp-details$")) {
             // Group details request
             send_group_details(sender_id);
