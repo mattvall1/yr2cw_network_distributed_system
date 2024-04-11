@@ -32,6 +32,7 @@ public class ClientMessagingHandler implements Runnable  {
             // If we become the coordinator, we need to run multithreading
             coordinator_thread_handler();
         } else {
+            System.out.println(in_message);
             read();
         }
     }
