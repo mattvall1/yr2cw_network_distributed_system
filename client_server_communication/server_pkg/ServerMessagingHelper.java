@@ -43,7 +43,7 @@ public class ServerMessagingHelper extends ClientHandler {
                 PrintWriter output = new PrintWriter(client_socket.getOutputStream(), true);
                 // Send data (only to non-senders)
                 if(!Objects.equals(sender_id, client_id)) {
-                    output.println(sender_id + ":" + message);
+                    output.println(sender_id + " broadcasted: " + message);
                 }
 
             } catch (IOException e) {

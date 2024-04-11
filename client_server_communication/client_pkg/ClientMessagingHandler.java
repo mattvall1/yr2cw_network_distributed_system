@@ -156,11 +156,7 @@ public class ClientMessagingHandler implements Runnable  {
             return true;
         } else if(message.matches("^dm-\\d+-.*")) {
             int send_to = Integer.parseInt(message.substring(3, message.indexOf("-", 3)));
-            if(client_ids_set.contains(send_to)) {
-                return true;
-            } else {
-                System.out.println("This user does not exist.");
-            }
+            return true;
         } else if(message.matches("^grp-details$")) {
             // Tell the user we are getting group details in this case
             System.out.println("Full group details:");
