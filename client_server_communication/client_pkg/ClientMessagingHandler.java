@@ -123,7 +123,7 @@ public class ClientMessagingHandler implements Runnable  {
     public void send_user_id() throws IOException {
         // Setup variables
         client_ids_set = get_client_ids();
-        Boolean valid_id = false;
+        boolean valid_id = false;
         String id_to_check = "";
 
         System.out.println("The current list of client IDs is: " + client_ids_set);

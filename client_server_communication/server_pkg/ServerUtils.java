@@ -1,6 +1,7 @@
 package client_server_communication.server_pkg;
 
 import client_server_communication.Server;
+import client_server_communication.client_pkg.ClientUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,7 +42,7 @@ public class ServerUtils extends Server {
     }
 
     public static void add_client_details(HashMap client_details, Integer user_id, Socket socket) throws IOException {
-        Boolean is_coordinator = client_details.isEmpty();
+        boolean is_coordinator = client_details.isEmpty();
 
         // If this is the coordinator, set global coordinator id
         if(is_coordinator) current_coordinator = user_id;
@@ -58,10 +59,7 @@ public class ServerUtils extends Server {
     }
 
     public static String get_current_datetime() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
-
-        return now.format(formatter);
+        return ClientUtils.get_current_datetime();
     }
 
     public static void send_client_ids(Socket socket) throws IOException {

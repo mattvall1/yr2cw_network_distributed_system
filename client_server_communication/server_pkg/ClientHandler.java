@@ -9,7 +9,7 @@ public class ClientHandler extends Server implements Runnable {
     public static Socket socket;
 
     public ClientHandler(Socket socket) {
-        this.socket = socket;
+        ClientHandler.socket = socket;
     }
 
     @Override // Override method in superclass

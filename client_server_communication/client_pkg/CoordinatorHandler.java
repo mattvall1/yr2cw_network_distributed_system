@@ -13,7 +13,7 @@ public class CoordinatorHandler implements Runnable {
     }
 
     private void send_check_request() {
-        while (true) {
+        while(true) {
             try {
                 // Wait for 20 seconds and send a message to receive details
                 TimeUnit.SECONDS.sleep(20);
