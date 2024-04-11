@@ -1,7 +1,5 @@
 package client_server_communication.server_pkg;
 
-import client_server_communication.Server;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
